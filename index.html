@@ -2,9 +2,9 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FIFTEENS AT FREDDY THREE</title>
-<!-- Fuente horror para el título -->
+<link rel="icon" href="freddyicon.png" type="image/png">
 <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
 <style>
   body {
@@ -15,7 +15,7 @@
     background-position: center;
     color: #df0;
     font-family: "Times New Roman", Times, serif;
-    font-weight: 300; /* ligero */
+    font-weight: 300;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -26,7 +26,6 @@
     cursor: pointer;
   }
 
-  /* Título */
   h1 {
     font-family: 'Creepster', cursive;
     color: #df0;
@@ -63,30 +62,37 @@
 const options = document.querySelectorAll("li");
 let selectedIndex = 0;
 
-// Función para cambiar selección
 function selectOption(index) {
   options[selectedIndex].classList.remove("selected");
   selectedIndex = (index + options.length) % options.length;
   options[selectedIndex].classList.add("selected");
 }
 
-// Función para activar la opción seleccionada
 function activateOption() {
-  if(selectedIndex === 0) {
-    window.location.href = "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://play.google.com/store/apps/details%3Fid%3Dcom.scottgames.fnaf3%26hl%3Des_419%26referrer%3Dutm_source%253Dgoogle%2526utm_medium%253Dorganic%2526utm_term%253Dfnaf%2B3%26pcampaignid%3DAPPU_1_1i4QabyKKPTZ5OUP0tW08Q0&ved=2ahUKEwi8zcv1suSQAxX0LLkGHdIqLd4Q5YQBegUIiQEQAg&usg=AOvVaw18bV4dCj03BRFCF1HRY5-V";
-  } else if(selectedIndex === 1) {
+  if (selectedIndex === 0) {
+    window.location.href = "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://play.google.com/store/apps/details%3Fid%3Dcom.scottgames.fnaf3%26hl%3Des_419&ved=2ahUKEwi8zcv1suSQAxX0LLkGHdIqLd4Q5YQBegUIiQEQAg";
+  } else if (selectedIndex === 1) {
     window.close();
   }
 }
 
-// Teclado
-document.addEventListener("keydown", (e) => {
-  if(e.key === "ArrowUp") selectOption(selectedIndex - 1);
-  else if(e.key === "ArrowDown") selectOption(selectedIndex + 1);
-  else if(e.key === "Enter") activateOption();
+// Clic directo en las opciones
+options.forEach((option, index) => {
+  option.addEventListener("click", (e) => {
+    e.stopPropagation();
+    selectOption(index);
+    activateOption();
+  });
 });
 
-// Detectar swipe en móvil
+// Teclado
+document.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowUp") selectOption(selectedIndex - 1);
+  else if (e.key === "ArrowDown") selectOption(selectedIndex + 1);
+  else if (e.key === "Enter") activateOption();
+});
+
+// Swipe táctil
 let touchStartY = 0;
 let touchEndY = 0;
 
@@ -97,14 +103,15 @@ document.addEventListener("touchstart", (e) => {
 document.addEventListener("touchend", (e) => {
   touchEndY = e.changedTouches[0].screenY;
   let deltaY = touchEndY - touchStartY;
-  if(deltaY > 30) selectOption(selectedIndex + 1); // swipe down
-  else if(deltaY < -30) selectOption(selectedIndex - 1); // swipe up
-  // Activar si no hubo swipe
-  if(Math.abs(deltaY) < 10) activateOption();
+  if (deltaY > 30) selectOption(selectedIndex + 1);
+  else if (deltaY < -30) selectOption(selectedIndex - 1);
+  if (Math.abs(deltaY) < 10) activateOption();
 });
 
-// Click en cualquier parte de la pantalla activa la opción seleccionada
-document.addEventListener("click", activateOption);
+// Clic fuera de las opciones activa la actual
+document.addEventListener("click", (e) => {
+  if (!e.target.matches("li")) activateOption();
+});
 </script>
 
 </body>
