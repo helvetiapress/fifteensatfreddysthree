@@ -39,12 +39,14 @@
     padding: 0;
     text-align: center;
   }
+
   li {
     font-size: 2em;
     margin: 20px 0;
+    transition: color 0.1s;
   }
-  li.selected,
-  li:hover {
+
+  li.selected {
     color: red;
   }
 </style>
@@ -63,20 +65,20 @@ const options = document.querySelectorAll("li");
 let selectedIndex = 0;
 
 function selectOption(index) {
-  options[selectedIndex].classList.remove("selected");
-  selectedIndex = (index + options.length) % options.length;
+  options.forEach(opt => opt.classList.remove("selected"));
+  selectedIndex = index;
   options[selectedIndex].classList.add("selected");
 }
 
 function activateOption() {
   if (selectedIndex === 0) {
-    window.location.href = "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://play.google.com/store/apps/details%3Fid%3Dcom.scottgames.fnaf3%26hl%3Des_419&ved=2ahUKEwi8zcv1suSQAxX0LLkGHdIqLd4Q5YQBegUIiQEQAg";
+    window.location.href = "https://play.google.com/store/apps/details?id=com.scottgames.fnaf3&hl=es_419";
   } else if (selectedIndex === 1) {
     window.close();
   }
 }
 
-// Clic directo en las opciones
+// Clic directo en cada opción
 options.forEach((option, index) => {
   option.addEventListener("click", (e) => {
     e.stopPropagation();
@@ -87,8 +89,8 @@ options.forEach((option, index) => {
 
 // Teclado
 document.addEventListener("keydown", (e) => {
-  if (e.key === "ArrowUp") selectOption(selectedIndex - 1);
-  else if (e.key === "ArrowDown") selectOption(selectedIndex + 1);
+  if (e.key === "ArrowUp") selectOption((selectedIndex - 1 + options.length) % options.length);
+  else if (e.key === "ArrowDown") selectOption((selectedIndex + 1) % options.length);
   else if (e.key === "Enter") activateOption();
 });
 
@@ -103,8 +105,8 @@ document.addEventListener("touchstart", (e) => {
 document.addEventListener("touchend", (e) => {
   touchEndY = e.changedTouches[0].screenY;
   let deltaY = touchEndY - touchStartY;
-  if (deltaY > 30) selectOption(selectedIndex + 1);
-  else if (deltaY < -30) selectOption(selectedIndex - 1);
+  if (deltaY > 30) selectOption((selectedIndex + 1) % options.length);
+  else if (deltaY < -30) selectOption((selectedIndex - 1 + options.length) % options.length);
   if (Math.abs(deltaY) < 10) activateOption();
 });
 
