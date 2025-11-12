@@ -24,14 +24,15 @@
     margin: 0;
     touch-action: none;
     cursor: pointer;
+    -webkit-tap-highlight-color: transparent; /* evita pantalla azul en móviles */
   }
 
   h1 {
     font-family: 'Creepster', cursive;
     color: #df0;
-    font-size: 2.5em;
+    font-size: 2.8em;
     text-align: center;
-    margin: 0 0 50px 0;
+    margin: 30px 0 60px 0;
   }
 
   ul {
@@ -43,7 +44,9 @@
   li {
     font-size: 2em;
     margin: 20px 0;
+    color: yellow;
     transition: color 0.1s;
+    user-select: none;
   }
 
   li.selected {
@@ -74,11 +77,11 @@ function activateOption() {
   if (selectedIndex === 0) {
     window.location.href = "https://play.google.com/store/apps/details?id=com.scottgames.fnaf3&hl=es_419";
   } else if (selectedIndex === 1) {
-    window.close();
+    window.open('', '_self').close();
   }
 }
 
-// Clic directo en cada opción
+// Clic directo
 options.forEach((option, index) => {
   option.addEventListener("click", (e) => {
     e.stopPropagation();
